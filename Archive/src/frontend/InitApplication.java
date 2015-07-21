@@ -29,8 +29,8 @@ public class InitApplication extends Application {
     }
 
     private void initSystemTray() {
-        if (!SystemTray.isSupported()) {
-            System.out.println("SystemTray is not supported");
+        if (!Systemtray.isSupported()) {
+            System.out.println("Systemtray is not supported");
             return;
         }
         final PopupMenu popup = new PopupMenu();
@@ -42,7 +42,7 @@ public class InitApplication extends Application {
         }
 
         final TrayIcon trayIcon = new TrayIcon(img);
-        final SystemTray tray = SystemTray.getSystemTray();
+        final Systemtray tray = Systemtray.getSystemTray();
 
         MenuItem exit = new MenuItem("exit");
 

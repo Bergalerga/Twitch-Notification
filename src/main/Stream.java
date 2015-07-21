@@ -14,10 +14,11 @@ import org.json.*;
  * Created by berg on 18/07/15.
  * Class responsible for handling the interaction with the twitch API.
  */
-public class TwitchHandler {
+public class Stream {
 
     private String url = "";
     private JSONObject streamInformation = null;
+    private Boolean lastOnlineStatus;
 
     /**
      * Generates a valid JSON Object from the channelName provided
@@ -25,8 +26,12 @@ public class TwitchHandler {
      * @param url name of the twitch channel
      */
 
-    public TwitchHandler(String channelName) {
+    public Stream(String channelName) {
         this.url = "https://api.twitch.tv/kraken/streams/" + channelName;
+        checkStreamStatus();
+    }
+
+    private void checkStreamStatus() {
         URL urlobj;
         HttpURLConnection conn;
         BufferedReader rd;
@@ -49,6 +54,12 @@ public class TwitchHandler {
 
         }
         streamInformation = new JSONObject(result.toString());
+        if (streamInformation.get("stream").toString() == "null") {
+            lastOnlineStatus = false;
+        }
+        else {
+            lastOnlineStatus = true;
+        }
     }
 
     /**
@@ -56,10 +67,11 @@ public class TwitchHandler {
      * @return the online status
      */
     public Boolean isOnline() {
+        checkStreamStatus();
         if (streamInformation == null) {
             return false;
         }
-        if (streamInformation.get("stream").equals("null")) {
+        if (streamInformation.get("stream").toString() == "null") {
             return false;
         }
         return true;
@@ -74,9 +86,12 @@ public class TwitchHandler {
         if (streamInformation == null) {
             return "";
         }
-        String streamerName = streamInformation.toString().substring(60);
-        streamerName = streamerName.substring(0, streamerName.indexOf('"'));
-        return streamerName;
+        if (streamInformation.get("stream").toString() != "null") {
+            String streamerName = streamInformation.toString().substring(60);
+            streamerName = streamerName.substring(0, streamerName.indexOf('"'));
+            return streamerName;
+        }
+        return "";
     }
 
     /**
@@ -87,9 +102,21 @@ public class TwitchHandler {
         if (streamInformation == null) {
             return "";
         }
-        JSONObject temp = (JSONObject) streamInformation.get("stream");
-        return temp.get("game").toString();
+        if (streamInformation.get("stream").toString() != "null") {
+            JSONObject temp = (JSONObject) streamInformation.get("stream");
+            return temp.get("game").toString();
+        }
+        else {
+            return "";
+        }
 
+    }
+    public Boolean getLastOnlineStatus() {
+        return lastOnlineStatus;
+    }
+
+    public void setLastOnlineStatus(Boolean isOnline) {
+        lastOnlineStatus = isOnline;
     }
 
     public String toString() {

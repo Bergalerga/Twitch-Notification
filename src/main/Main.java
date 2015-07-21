@@ -1,12 +1,7 @@
 package main;
 
-import frontend.InitApplication;
+import frontend.Systemtray;
 
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -14,7 +9,8 @@ import java.util.ArrayList;
  */
 public class Main {
 
-    ArrayList streamlist = new ArrayList<TwitchHandler>();
+    ArrayList<Stream> streamlist = new ArrayList();
+    Systemtray tray;
 
     public static void main(String[] args) {
 
@@ -22,6 +18,39 @@ public class Main {
     }
 
     public Main() {
-        TwitchHandler handler = new TwitchHandler("jesperwOw");
+        Stream handler = new Stream("jesperwOw");
+        Stream handler2 = new Stream("AmazHS");
+        Stream handler3 = new Stream("zfg1");
+
+        streamlist.add(handler);
+        streamlist.add(handler2);
+        streamlist.add(handler3);
+        tray = new Systemtray();
+        mainLoop();
+    }
+
+    private void mainLoop() {
+        Thread thread = new Thread();
+        while(true) {
+            for (Stream stream : streamlist) {
+                Boolean online = stream.isOnline();
+                if (!stream.getLastOnlineStatus() && online) {
+                    tray.displayPopup(true);
+                    stream.setLastOnlineStatus(true);
+
+                }
+                else if (stream.getLastOnlineStatus() && !online) {
+                    tray.displayPopup(false);
+                    stream.setLastOnlineStatus(false);
+                }
+                System.out.println("Online: " + stream.isOnline().toString() + "," + " Game: " + stream.getGame() + "," + " Name: " + stream.getStreamerName());
+            }
+            try {
+                thread.sleep(30000);
+            }
+            catch(InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
