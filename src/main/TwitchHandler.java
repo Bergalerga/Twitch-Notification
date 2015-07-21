@@ -1,6 +1,7 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -11,19 +12,21 @@ import org.json.*;
 
 /**
  * Created by berg on 18/07/15.
+ * Class responsible for handling the interaction with the twitch API.
  */
 public class TwitchHandler {
 
     private String url = "";
-    private String streamInformation = "";
+    private JSONObject streamInformation = null;
 
-    public TwitchHandler(String url) {
+    /**
+     * Generates a valid JSON Object from the channelName provided
+     *
+     * @param url name of the twitch channel
+     */
 
-        this.url = url;
-    }
-
-    public JSONObject getStreamJSON() {
-
+    public TwitchHandler(String channelName) {
+        this.url = "https://api.twitch.tv/kraken/streams/" + channelName;
         URL urlobj;
         HttpURLConnection conn;
         BufferedReader rd;
@@ -39,16 +42,60 @@ public class TwitchHandler {
             }
             rd.close();
         } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Stream not found");
+            return;
         }
-        JSONObject streamInformation = new JSONObject(result.toString());
-        this.streamInformation = streamInformation
-        return streamInformation;
+        catch (Exception e) {
+
+        }
+        streamInformation = new JSONObject(result.toString());
     }
 
-    public String getStreamerName() {
+    /**
+     * Checks the online status of the channel
+     * @return the online status
+     */
+    public Boolean isOnline() {
+        if (streamInformation == null) {
+            return false;
+        }
+        if (streamInformation.get("stream").equals("null")) {
+            return false;
+        }
+        return true;
 
+    }
+
+    /**
+     * Returns the name of the streamer
+     * @return the name
+     */
+    public String getStreamerName() {
+        if (streamInformation == null) {
+            return "";
+        }
+        String streamerName = streamInformation.toString().substring(60);
+        streamerName = streamerName.substring(0, streamerName.indexOf('"'));
+        return streamerName;
+    }
+
+    /**
+     * Returns the game being played
+     * @return game
+     */
+    public String getGame() {
+        if (streamInformation == null) {
+            return "";
+        }
+        JSONObject temp = (JSONObject) streamInformation.get("stream");
+        return temp.get("game").toString();
+
+    }
+
+    public String toString() {
+        if (streamInformation != null) {
+            return streamInformation.toString();
+        }
+        return "{}";
     }
 }

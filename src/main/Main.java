@@ -1,5 +1,7 @@
 package main;
 
+import frontend.InitApplication;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -20,7 +22,6 @@ public class Main {
     }
 
     public Main() {
-        TwitchHandler handler = new TwitchHandler("https://api.twitch.tv/kraken/streams/DreamhackCS");
-        System.out.println(handler.getStreamJSON());
+        TwitchHandler handler = new TwitchHandler("jesperwOw");
     }
 }
