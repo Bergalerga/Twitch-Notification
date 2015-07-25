@@ -19,6 +19,7 @@ public class Stream {
     private String url = "";
     private JSONObject streamInformation = null;
     private Boolean lastOnlineStatus;
+    private Boolean internetConnection = true;
 
     /**
      * Generates a valid JSON Object from the channelName provided
@@ -29,6 +30,12 @@ public class Stream {
     public Stream(String channelName) {
         this.url = "https://api.twitch.tv/kraken/streams/" + channelName;
         checkStreamStatus();
+        if (streamInformation.get("stream").toString() == "null") {
+            lastOnlineStatus = false;
+        }
+        else {
+            lastOnlineStatus = true;
+        }
     }
 
     private void checkStreamStatus() {
@@ -47,19 +54,15 @@ public class Stream {
             }
             rd.close();
         } catch (IOException e) {
-            System.out.println("Stream not found");
+            System.out.println("Offline");
+            internetConnection = false;
             return;
         }
         catch (Exception e) {
 
         }
         streamInformation = new JSONObject(result.toString());
-        if (streamInformation.get("stream").toString() == "null") {
-            lastOnlineStatus = false;
-        }
-        else {
-            lastOnlineStatus = true;
-        }
+
     }
 
     /**
@@ -117,6 +120,10 @@ public class Stream {
 
     public void setLastOnlineStatus(Boolean isOnline) {
         lastOnlineStatus = isOnline;
+    }
+
+    public Boolean getInternetConnection(){
+        return internetConnection;
     }
 
     public String toString() {

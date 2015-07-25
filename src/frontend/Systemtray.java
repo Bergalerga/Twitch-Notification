@@ -18,6 +18,7 @@ public class Systemtray {
     private final SystemTray tray;
     private final PopupMenu popup;
 
+
     private MenuItem exit = null;
     private MenuItem about = null;
 
@@ -83,5 +84,4 @@ public class Systemtray {
     public void displayPopup(Boolean isOnline) {
 
     }
-
 }

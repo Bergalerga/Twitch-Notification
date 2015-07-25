@@ -18,13 +18,8 @@ public class Main {
     }
 
     public Main() {
-        Stream handler = new Stream("jesperwOw");
-        Stream handler2 = new Stream("AmazHS");
-        Stream handler3 = new Stream("zfg1");
-
-        streamlist.add(handler);
-        streamlist.add(handler2);
-        streamlist.add(handler3);
+        Stream test = new Stream("chiefmango");
+        streamlist.add(test);
         tray = new Systemtray();
         mainLoop();
     }
@@ -33,20 +28,26 @@ public class Main {
         Thread thread = new Thread();
         while(true) {
             for (Stream stream : streamlist) {
-                Boolean online = stream.isOnline();
-                if (!stream.getLastOnlineStatus() && online) {
-                    tray.displayPopup(true);
-                    stream.setLastOnlineStatus(true);
 
+                if (stream.getInternetConnection()) {
+                    System.out.println(streamlist.get(0));
+                    Boolean online = stream.isOnline();
+
+                    if (!stream.getLastOnlineStatus() && online) {
+                        tray.displayPopup(true);
+                        System.out.println("Streamer went online");
+                        stream.setLastOnlineStatus(true);
+
+                    } else if (stream.getLastOnlineStatus() && !online) {
+                        tray.displayPopup(false);
+                        System.out.println("Streamer went offline");
+                        stream.setLastOnlineStatus(false);
+                    }
                 }
-                else if (stream.getLastOnlineStatus() && !online) {
-                    tray.displayPopup(false);
-                    stream.setLastOnlineStatus(false);
-                }
-                System.out.println("Online: " + stream.isOnline().toString() + "," + " Game: " + stream.getGame() + "," + " Name: " + stream.getStreamerName());
             }
+            System.out.println("Loop completed");
             try {
-                thread.sleep(30000);
+                thread.sleep(10000);
             }
             catch(InterruptedException e) {
                 e.printStackTrace();
