@@ -1,13 +1,19 @@
 package main;
 
+import frontend.FXApplication;
 import frontend.Systemtray;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
  * Created by berg on 18/07/15.
  */
-public class Main {
+public class Main extends javafx.application.Application{
 
     ArrayList<Stream> streamlist = new ArrayList();
     Systemtray tray;
@@ -15,15 +21,25 @@ public class Main {
     public static void main(String[] args) {
 
         Main main = new Main();
+        FXApplication front = new FXApplication();
+        launch();
+    }
+    public void start(Stage primaryStage) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("resources/scene.fxml"));
+        Scene scene = new Scene(root);
+        primaryStage.setScene(scene);
+        primaryStage.setTitle("Twitch Notification");
+        primaryStage.show();
     }
 
     public Main() {
 
-        Stream handler = new Stream("esl_csgo");
-        streamlist.add(handler);
 
-        tray = new Systemtray();
-        mainLoop();
+        //Stream handler = new Stream("esl_csgo");
+        //streamlist.add(handler);
+
+        //tray = new Systemtray();
+        //mainLoop();
     }
 
     private void mainLoop() {
