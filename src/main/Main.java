@@ -18,7 +18,7 @@ public class Main {
     }
 
     public Main() {
-        Stream handler = new Stream("jesperwOw");
+        Stream handler = new Stream("esl_csgo");
         Stream handler2 = new Stream("AmazHS");
         Stream handler3 = new Stream("zfg1");
 
@@ -31,16 +31,15 @@ public class Main {
 
     private void mainLoop() {
         Thread thread = new Thread();
+        System.out.println(streamlist.get(0));
         while(true) {
             for (Stream stream : streamlist) {
                 Boolean online = stream.isOnline();
                 if (!stream.getLastOnlineStatus() && online) {
-                    tray.displayPopup(true);
+                    tray.displayPopup(stream.getStreamerName());
                     stream.setLastOnlineStatus(true);
-
                 }
                 else if (stream.getLastOnlineStatus() && !online) {
-                    tray.displayPopup(false);
                     stream.setLastOnlineStatus(false);
                 }
                 System.out.println("Online: " + stream.isOnline().toString() + "," + " Game: " + stream.getGame() + "," + " Name: " + stream.getStreamerName());
