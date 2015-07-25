@@ -21,7 +21,7 @@ public class FXApplication extends javafx.application.Application {
     }
     @Override
     public void start(Stage stage) {
-        Parent root = FXMLLoader.load(getClass().getResource());
+        Parent root = FXMLLoader.load(getClass().getResource("static"));
     }
 
     private void initApplication() {
