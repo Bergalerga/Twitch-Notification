@@ -34,8 +34,6 @@ public class Main {
                 if (stream.getInternetConnection()) {
                     Boolean online = stream.isOnline();
 
-                    tray.displayPopup(stream.getStreamerName(), stream.getStreamHeader());
-
                     if (!stream.getLastOnlineStatus() && online) {
                         tray.displayPopup(stream.getStreamerName(), stream.getStreamHeader());
                         stream.setLastOnlineStatus(true);
