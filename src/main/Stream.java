@@ -135,6 +135,10 @@ public class Stream {
 
     public String getStreamHeader(){
         if (streamInformation != null) {
+            JSONObject temp = (JSONObject) streamInformation.get("stream");
+            JSONObject temp2 = (JSONObject) temp.get("channel");
+            return temp2.get("status").toString();
+            //return temp2.get("status").toString();
 
         }
         return "";

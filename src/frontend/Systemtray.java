@@ -83,10 +83,10 @@ public class Systemtray {
      * Method to display a popup message, displaying if a streamer has gone online or offline.
      * @param isOnline Whether or not the streamer has gone online or offline.
      */
-    public void displayPopup(String userName) {
-        String twitchURL = "www.twitch.tv/" + userName;
+    public void displayPopup(String userName, String header) {
 
-        trayIcon.displayMessage(userName + " just went live!", "click here to go to stream", TrayIcon.MessageType.INFO);
+        final String twitchURL = "www.twitch.tv/" + userName;
+        trayIcon.displayMessage(userName + " just went live!", header, TrayIcon.MessageType.INFO);
         /*
          * Double click action performed
          */
