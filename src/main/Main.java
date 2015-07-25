@@ -53,7 +53,7 @@ public class Main {
                         stream.setLastOnlineStatus(false);
                     }
                 }
-=======
+
                 Boolean online = stream.isOnline();
                 if (!stream.getLastOnlineStatus() && online) {
                     tray.displayPopup(stream.getStreamerName());
@@ -63,7 +63,7 @@ public class Main {
                     stream.setLastOnlineStatus(false);
                 }
                 System.out.println("Online: " + stream.isOnline().toString() + "," + " Game: " + stream.getGame() + "," + " Name: " + stream.getStreamerName());
->>>>>>> vebjørn
+
             }
             System.out.println("Loop completed");
             try {
