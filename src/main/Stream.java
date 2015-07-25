@@ -1,5 +1,6 @@
 package main;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,6 +10,8 @@ import java.net.URL;
 
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.*;
+
+import javax.imageio.ImageIO;
 
 /**
  * Created by berg on 18/07/15.
@@ -138,9 +141,41 @@ public class Stream {
             JSONObject temp = (JSONObject) streamInformation.get("stream");
             JSONObject temp2 = (JSONObject) temp.get("channel");
             return temp2.get("status").toString();
-            //return temp2.get("status").toString();
 
         }
         return "";
+    }
+    public BufferedImage getStreamImage() throws Exception{
+        if (streamInformation != null) {
+            String channelUrl = "https://api.twitch.tv/kraken/channels/" + this.url.substring(37);
+            System.out.println(channelUrl);
+            URL urlobj;
+            HttpURLConnection conn;
+            BufferedReader rd;
+            String line;
+            StringBuilder result = new StringBuilder();
+            try {
+                urlobj = new URL(channelUrl);
+                conn = (HttpURLConnection) urlobj.openConnection();
+                conn.setRequestMethod("GET");
+                rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+                while ((line = rd.readLine()) != null) {
+                    result.append(line);
+                }
+                rd.close();
+            } catch (IOException e) {
+                System.out.println("Offline");
+                internetConnection = false;
+                return null;
+            }
+            catch (Exception e) {
+
+            }
+            JSONObject streaminfo = new JSONObject(result.toString());
+            URL imageURL = new URL(streaminfo.get("logo").toString());
+            BufferedImage img = ImageIO.read(imageURL);
+            return img;
+        }
+        return null;
     }
 }

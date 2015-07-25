@@ -1,5 +1,6 @@
 package frontend;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 
 import javax.imageio.ImageIO;
@@ -16,10 +17,11 @@ public class FXApplication extends javafx.application.Application {
     public FXApplication() {
 
         initApplication();
+        launch();
     }
     @Override
     public void start(Stage stage) {
-
+        Parent root = FXMLLoader.load(getClass().getResource());
     }
 
     private void initApplication() {
