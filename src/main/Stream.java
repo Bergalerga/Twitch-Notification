@@ -132,4 +132,11 @@ public class Stream {
         }
         return "{}";
     }
+
+    public String getStreamHeader(){
+        if (streamInformation != null) {
+
+        }
+        return "";
+    }
 }

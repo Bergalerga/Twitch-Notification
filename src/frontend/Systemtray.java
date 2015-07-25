@@ -8,6 +8,7 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * Class responsible for initializing and handling events related to the system tray.
@@ -17,6 +18,7 @@ public class Systemtray {
 
     private final SystemTray tray;
     private final PopupMenu popup;
+    private TrayIcon trayIcon;
 
 
     private MenuItem exit = null;
@@ -48,7 +50,7 @@ public class Systemtray {
         popup.add(exit);
         popup.add(about);
 
-        final TrayIcon trayIcon = new TrayIcon(img);
+        trayIcon = new TrayIcon(img);
         trayIcon.setPopupMenu(popup);
         try {
             tray.add(trayIcon);
@@ -81,7 +83,29 @@ public class Systemtray {
      * Method to display a popup message, displaying if a streamer has gone online or offline.
      * @param isOnline Whether or not the streamer has gone online or offline.
      */
-    public void displayPopup(Boolean isOnline) {
+    public void displayPopup(String userName) {
+        String twitchURL = "www.twitch.tv/" + userName;
 
+        trayIcon.displayMessage(userName + " just went live!", "click here to go to stream", TrayIcon.MessageType.INFO);
+        /*
+         * Double click action performed
+         */
+        trayIcon.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                URI uri = null;
+                try {
+                    uri = new URI(twitchURL);
+                }
+                catch (Exception ex) {
+                    System.out.println("Could not create link");
+                }
+                try {
+                    java.awt.Desktop.getDesktop().browse(uri);
+                } catch (Exception ex) {
+
+                }
+            }
+        });
     }
 }
