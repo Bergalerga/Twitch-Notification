@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.*;
@@ -39,21 +40,7 @@ public class Stream {
         this.channelName = channelName;
         this.url = "https://api.twitch.tv/kraken/channels/" + channelName;
         checkStreamStatus();
-        if (!streamJSON.get("status").toString().equals("No internet")) {
-            if (streamJSON.get("status").toString().equals("404")) {
-                streamValidity = false;
-            }
-            else {
-                System.out.println("hmm");
-                streamValidity = true;
-                game = streamJSON.get("game").toString();
-                streamerName = streamJSON.get("display_name").toString();
-                streamHeader = streamJSON.get("status").toString();
-            }
-        }
-        else {
-            internetConnection = false;
-        }
+
     }
 
     public void checkStreamStatus() {
@@ -67,21 +54,37 @@ public class Stream {
             urlobj = new URL(this.url);
             conn = (HttpURLConnection) urlobj.openConnection();
             conn.setRequestMethod("GET");
+            System.out.println(conn);
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
+            System.out.println(rd );
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
             rd.close();
             streamJSON = new JSONObject(result.toString());
         }
-        catch (IOException e) {
-            e.printStackTrace();
+        catch (UnknownHostException ex) {
+            //No internet
             streamJSON = new JSONObject("{\"status\":\"No internet\"}");
         }
-
-        catch (Exception e) {
-
+        catch (IOException e) {
+            //No such streamer
+            streamJSON = new JSONObject("{\"status\":\"404\"}");
+            e.printStackTrace();
+        }
+        if (!streamJSON.get("status").toString().equals("No internet")) {
+            if (streamJSON.get("status").toString().equals("404")) {
+                streamValidity = false;
+            }
+            else {
+                streamValidity = true;
+                game = streamJSON.get("game").toString();
+                streamerName = streamJSON.get("display_name").toString();
+                streamHeader = streamJSON.get("status").toString();
+            }
+        }
+        else {
+            internetConnection = false;
         }
     }
 
@@ -91,9 +94,8 @@ public class Stream {
      */
     public Boolean isOnline() {
         checkStreamStatus();
-
-        return true;
-
+        if (streamJSON.get("status").toString().equals("No internet") {
+            return true;
     }
 
     /**

@@ -79,7 +79,6 @@ public class Main extends javafx.application.Application{
             public void run() {
                 while(true) {
                     for (Stream stream : streamlist) {
-                        System.out.println(stream);
                         if (stream.getInternetConnection()) {
                             Boolean online = stream.isOnline();
 
