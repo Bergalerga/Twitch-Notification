@@ -20,11 +20,14 @@ import javax.imageio.ImageIO;
 public class Stream {
 
     private String url = "";
-    private JSONObject streamInformation = null;
+    private JSONObject streamJSON = null;
     private Boolean lastOnlineStatus;
     private Boolean internetConnection = true;
     private Boolean streamValidity;
+    private String channelName;
     private String streamerName;
+    private String game;
+    private String streamHeader;
 
     /**
      * Generates a valid JSON Object from the channelName provided
@@ -33,20 +36,23 @@ public class Stream {
      */
 
     public Stream(String channelName) {
-        this.streamerName = channelName;
-        this.url = "https://api.twitch.tv/kraken/streams/" + channelName;
+        this.channelName = channelName;
+        this.url = "https://api.twitch.tv/kraken/channels/" + channelName;
         checkStreamStatus();
-        if (streamInformation != null) {
-
-            if (streamInformation.get("stream").toString() == "null") {
-                lastOnlineStatus = false;
-            } else {
-                lastOnlineStatus = true;
+        if (!streamJSON.get("status").toString().equals("No internet")) {
+            if (streamJSON.get("status").toString().equals("404")) {
+                streamValidity = false;
             }
-            streamValidity = true;
+            else {
+                System.out.println("hmm");
+                streamValidity = true;
+                game = streamJSON.get("game").toString();
+                streamerName = streamJSON.get("display_name").toString();
+                streamHeader = streamJSON.get("status").toString();
+            }
         }
         else {
-            streamValidity = false;
+            internetConnection = false;
         }
     }
 
@@ -60,25 +66,22 @@ public class Stream {
             urlobj = new URL(this.url);
             conn = (HttpURLConnection) urlobj.openConnection();
             conn.setRequestMethod("GET");
-
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
+            
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
             rd.close();
+            streamJSON = new JSONObject(result.toString());
         }
         catch (IOException e) {
-            internetConnection = false;
-            return;
+            e.printStackTrace();
+            streamJSON = new JSONObject("{\"status\":\"No internet\"}");
         }
 
         catch (Exception e) {
 
         }
-        streamValidity = true;
-        streamInformation = new JSONObject(result.toString());
-
     }
 
     /**
@@ -87,12 +90,7 @@ public class Stream {
      */
     public Boolean isOnline() {
         checkStreamStatus();
-        if (streamInformation == null) {
-            return false;
-        }
-        if (streamInformation.get("stream").toString() == "null") {
-            return false;
-        }
+
         return true;
 
     }
@@ -110,16 +108,7 @@ public class Stream {
      * @return game
      */
     public String getGame() {
-        if (streamInformation == null) {
-            return "";
-        }
-        if (streamInformation.get("stream").toString() != "null") {
-            JSONObject temp = (JSONObject) streamInformation.get("stream");
-            return temp.get("game").toString();
-        }
-        else {
-            return "";
-        }
+        return this.game;
 
     }
     public Boolean getLastOnlineStatus() {
@@ -134,54 +123,15 @@ public class Stream {
         return internetConnection;
     }
 
-
-
     public String getStreamHeader(){
-        if (streamInformation != null) {
-            JSONObject temp = (JSONObject) streamInformation.get("stream");
-            JSONObject temp2 = (JSONObject) temp.get("channel");
-            return temp2.get("status").toString();
-
-        }
-        return "";
+        return this.streamHeader;
     }
-    public BufferedImage getStreamImage() throws Exception{
-        if (streamInformation != null) {
-            String channelUrl = "https://api.twitch.tv/kraken/channels/" + this.url.substring(37);
-            System.out.println(channelUrl);
-            URL urlobj;
-            HttpURLConnection conn;
-            BufferedReader rd;
-            String line;
-            StringBuilder result = new StringBuilder();
-            try {
-                urlobj = new URL(channelUrl);
-                conn = (HttpURLConnection) urlobj.openConnection();
-                conn.setRequestMethod("GET");
-                rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while ((line = rd.readLine()) != null) {
-                    result.append(line);
-                }
-                rd.close();
-            } catch (IOException e) {
-                System.out.println("Offline");
-                internetConnection = false;
-                return null;
-            }
-            catch (Exception e) {
 
-            }
-            JSONObject streaminfo = new JSONObject(result.toString());
-            URL imageURL = new URL(streaminfo.get("logo").toString());
-            BufferedImage img = ImageIO.read(imageURL);
-            return img;
-        }
-        return null;
-    }
     public Boolean getStreamValidity() {
         return streamValidity;
     }
     public String toString() {
+        /*
         if (streamInformation != null) {
             if (isOnline()) {
                 return getStreamerName() + " - " + getGame() + " - ";
@@ -191,5 +141,7 @@ public class Stream {
             }
         }
         return "{}";
+        */
+        return streamJSON.toString();
     }
 }

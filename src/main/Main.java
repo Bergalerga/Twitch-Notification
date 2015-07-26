@@ -30,7 +30,7 @@ public class Main extends javafx.application.Application{
 
 
         Main main = new Main();
-        launch();
+        //launch();
 
     }
     public void start(Stage primaryStage) throws IOException {
@@ -67,8 +67,10 @@ public class Main extends javafx.application.Application{
 
     public Main() {
 
-        tray = new Systemtray();
-        mainLoop();
+        //tray = new Systemtray();
+        //mainLoop();
+        Stream s1 = new Stream("esl_csgasdasdadasdo");
+        System.out.println(s1);
 
     }
 
