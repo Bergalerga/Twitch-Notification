@@ -66,11 +66,9 @@ public class Main extends javafx.application.Application{
     }
 
     public Main() {
-
-        //tray = new Systemtray();
-        //mainLoop();
-        Stream s1 = new Stream("esl_csgasdasdadasdo");
-        System.out.println(s1);
+        Stream s1 = new Stream("zfg1");
+        streamlist.add(s1);
+        mainLoop();
 
     }
 
@@ -80,13 +78,11 @@ public class Main extends javafx.application.Application{
                 while(true) {
                     for (Stream stream : streamlist) {
                         if (stream.getInternetConnection()) {
-                            Boolean online = stream.isOnline();
-
-                            if (!stream.getLastOnlineStatus() && online) {
-                                tray.displayPopup(stream.getStreamerName(), stream.getStreamHeader());
-                                stream.setLastOnlineStatus(true);
-                            } else if (stream.getLastOnlineStatus() && !online) {
-                                stream.setLastOnlineStatus(false);
+                            Boolean copy = stream.onlineStatus;
+                            stream.updateStreamStatus();
+                            if (stream.isOnline() && !copy) {
+                                tray.displayPopup(stream.getChannelName(), stream.getStreamHeader());
+                                System.out.println("japp");
                             }
                         }
                     }
@@ -108,4 +104,6 @@ public class Main extends javafx.application.Application{
             streamlist.add(handler);
         }
     }
+
+
 }

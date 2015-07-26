@@ -22,7 +22,7 @@ public class Stream {
 
     private String url = "";
     private JSONObject streamJSON = null;
-    private Boolean lastOnlineStatus;
+    protected Boolean onlineStatus = false;
     private Boolean internetConnection = true;
     private Boolean streamValidity;
     private String channelName;
@@ -39,24 +39,21 @@ public class Stream {
     public Stream(String channelName) {
         this.channelName = channelName;
         this.url = "https://api.twitch.tv/kraken/channels/" + channelName;
-        checkStreamStatus();
+        updateStreamStatus();
 
     }
 
-    public void checkStreamStatus() {
+    public void updateStreamStatus() {
         URL urlobj;
         HttpURLConnection conn;
         BufferedReader rd;
         String line;
         StringBuilder result = new StringBuilder();
-        System.out.println(url);
         try {
             urlobj = new URL(this.url);
             conn = (HttpURLConnection) urlobj.openConnection();
             conn.setRequestMethod("GET");
-            System.out.println(conn);
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            System.out.println(rd );
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
@@ -70,7 +67,6 @@ public class Stream {
         catch (IOException e) {
             //No such streamer
             streamJSON = new JSONObject("{\"status\":\"404\"}");
-            e.printStackTrace();
         }
         if (!streamJSON.get("status").toString().equals("No internet")) {
             if (streamJSON.get("status").toString().equals("404")) {
@@ -93,9 +89,27 @@ public class Stream {
      * @return the online status
      */
     public Boolean isOnline() {
-        checkStreamStatus();
-        if (streamJSON.get("status").toString().equals("No internet") {
-            return true;
+        URL urlobj;
+        HttpURLConnection conn;
+        BufferedReader rd;
+        String line;
+        StringBuilder result = new StringBuilder();
+        try {
+            urlobj = new URL("https://api.twitch.tv/kraken/streams" + channelName);
+            conn = (HttpURLConnection) urlobj.openConnection();
+            conn.setRequestMethod("GET");
+            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            while ((line = rd.readLine()) != null) {
+                result.append(line);
+            }
+            rd.close();
+        }
+        catch (Exception ex) {
+            onlineStatus = false;
+            return onlineStatus;
+        }
+        onlineStatus = true;
+        return onlineStatus;
     }
 
     /**
@@ -114,13 +128,6 @@ public class Stream {
         return this.game;
 
     }
-    public Boolean getLastOnlineStatus() {
-        return lastOnlineStatus;
-    }
-
-    public void setLastOnlineStatus(Boolean isOnline) {
-        lastOnlineStatus = isOnline;
-    }
 
     public Boolean getInternetConnection(){
         return internetConnection;
@@ -133,18 +140,14 @@ public class Stream {
     public Boolean getStreamValidity() {
         return streamValidity;
     }
+    public String getChannelName() {
+        return channelName;
+    }
     public String toString() {
-        /*
-        if (streamInformation != null) {
-            if (isOnline()) {
-                return getStreamerName() + " - " + getGame() + " - ";
-            }
-            else {
-                return getStreamerName() + " Offline ";
-            }
-        }
-        return "{}";
-        */
-        return streamJSON.toString();
+        return streamerName + " - " + game + " - " + onlineStatus;
+    }
+    //FOR TESTING PURPOSES ONLY!
+    public void setOnlineStatus(Boolean status) {
+        onlineStatus = status;
     }
 }
