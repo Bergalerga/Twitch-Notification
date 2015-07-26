@@ -21,9 +21,9 @@
       <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
           <children>
-            <ListView editable="false" prefHeight="392.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="39.0" />
-            <TextField prefHeight="30.0" prefWidth="200.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="3.0" />
-            <Button mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="30.0" prefWidth="75.0" text="Add" AnchorPane.leftAnchor="207.0" AnchorPane.topAnchor="3.0" />
+            <ListView fx:id="listView" editable="false" prefHeight="425.0" prefWidth="285.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="37.0" />
+            <TextField fx:id="textField" editable="true" onInputMethodTextChanged="#textInput" prefHeight="30.0" prefWidth="200.0" promptText="Enter streamname" text="" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="3.0" />
+            <Button fx:id="Button" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="30.0" prefWidth="75.0" text="Add" AnchorPane.leftAnchor="207.0" AnchorPane.topAnchor="3.0" />
           </children>
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">

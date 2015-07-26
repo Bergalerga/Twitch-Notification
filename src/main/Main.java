@@ -21,20 +21,24 @@ public class Main extends javafx.application.Application{
 
     ArrayList<Stream> streamlist = new ArrayList();
     Systemtray tray;
+    Thread t1;
 
     private Stage primaryStage;
 
 
     public static void main(String[] args) {
 
+
         Main main = new Main();
         launch();
+
     }
     public void start(Stage primaryStage) throws IOException {
         this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("AddressApp");
+        this.primaryStage.setTitle("Twitch Notification");
 
         initMainLayout();
+
     }
 
     public void initMainLayout() {
@@ -63,36 +67,44 @@ public class Main extends javafx.application.Application{
 
     public Main() {
 
+        tray = new Systemtray();
+        mainLoop();
 
-        //Stream handler = new Stream("esl_csgo");
-        //streamlist.add(handler);
-
-        //tray = new Systemtray();
-        //mainLoop();
     }
 
     private void mainLoop() {
+        t1 = new Thread(new Runnable() {
+            public void run() {
+                while(true) {
+                    for (Stream stream : streamlist) {
+                        System.out.println(stream);
+                        if (stream.getInternetConnection()) {
+                            Boolean online = stream.isOnline();
 
-        Thread thread = new Thread();
-        while(true) {
-            for (Stream stream : streamlist) {
-                if (stream.getInternetConnection()) {
-                    Boolean online = stream.isOnline();
-
-                    if (!stream.getLastOnlineStatus() && online) {
-                        tray.displayPopup(stream.getStreamerName(), stream.getStreamHeader());
-                        stream.setLastOnlineStatus(true);
-                    } else if (stream.getLastOnlineStatus() && !online) {
-                        stream.setLastOnlineStatus(false);
+                            if (!stream.getLastOnlineStatus() && online) {
+                                tray.displayPopup(stream.getStreamerName(), stream.getStreamHeader());
+                                stream.setLastOnlineStatus(true);
+                            } else if (stream.getLastOnlineStatus() && !online) {
+                                stream.setLastOnlineStatus(false);
+                            }
+                        }
+                    }
+                    try {
+                        t1.sleep(10000);
+                    }
+                    catch(InterruptedException e) {
+                        e.printStackTrace();
                     }
                 }
             }
-            try {
-                thread.sleep(10000);
-            }
-            catch(InterruptedException e) {
-                e.printStackTrace();
-            }
+        });
+        t1.start();
+    }
+
+    public void addStreamer(String channelName) {
+        Stream handler = new Stream(channelName);
+        if (handler.getStreamValidity()) {
+            streamlist.add(handler);
         }
     }
 }

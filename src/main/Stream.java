@@ -23,6 +23,8 @@ public class Stream {
     private JSONObject streamInformation = null;
     private Boolean lastOnlineStatus;
     private Boolean internetConnection = true;
+    private Boolean streamValidity;
+    private String streamerName;
 
     /**
      * Generates a valid JSON Object from the channelName provided
@@ -31,17 +33,24 @@ public class Stream {
      */
 
     public Stream(String channelName) {
+        this.streamerName = channelName;
         this.url = "https://api.twitch.tv/kraken/streams/" + channelName;
         checkStreamStatus();
-        if (streamInformation.get("stream").toString() == "null") {
-            lastOnlineStatus = false;
+        if (streamInformation != null) {
+
+            if (streamInformation.get("stream").toString() == "null") {
+                lastOnlineStatus = false;
+            } else {
+                lastOnlineStatus = true;
+            }
+            streamValidity = true;
         }
         else {
-            lastOnlineStatus = true;
+            streamValidity = false;
         }
     }
 
-    private void checkStreamStatus() {
+    public void checkStreamStatus() {
         URL urlobj;
         HttpURLConnection conn;
         BufferedReader rd;
@@ -51,19 +60,23 @@ public class Stream {
             urlobj = new URL(this.url);
             conn = (HttpURLConnection) urlobj.openConnection();
             conn.setRequestMethod("GET");
+
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
             rd.close();
-        } catch (IOException e) {
-            System.out.println("Offline");
+        }
+        catch (IOException e) {
             internetConnection = false;
             return;
         }
+
         catch (Exception e) {
 
         }
+        streamValidity = true;
         streamInformation = new JSONObject(result.toString());
 
     }
@@ -89,15 +102,7 @@ public class Stream {
      * @return the name
      */
     public String getStreamerName() {
-        if (streamInformation == null) {
-            return "";
-        }
-        if (streamInformation.get("stream").toString() != "null") {
-            String streamerName = streamInformation.toString().substring(60);
-            streamerName = streamerName.substring(0, streamerName.indexOf('"'));
-            return streamerName;
-        }
-        return "";
+        return streamerName;
     }
 
     /**
@@ -129,12 +134,7 @@ public class Stream {
         return internetConnection;
     }
 
-    public String toString() {
-        if (streamInformation != null) {
-            return streamInformation.toString();
-        }
-        return "{}";
-    }
+
 
     public String getStreamHeader(){
         if (streamInformation != null) {
@@ -177,5 +177,19 @@ public class Stream {
             return img;
         }
         return null;
+    }
+    public Boolean getStreamValidity() {
+        return streamValidity;
+    }
+    public String toString() {
+        if (streamInformation != null) {
+            if (isOnline()) {
+                return getStreamerName() + " - " + getGame() + " - ";
+            }
+            else {
+                return getStreamerName() + " Offline ";
+            }
+        }
+        return "{}";
     }
 }
