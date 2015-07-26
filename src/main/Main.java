@@ -2,11 +2,15 @@ package main;
 
 import frontend.FXApplication;
 import frontend.Systemtray;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import sun.plugin.javascript.navig.Anchor;
 
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -18,18 +22,43 @@ public class Main extends javafx.application.Application{
     ArrayList<Stream> streamlist = new ArrayList();
     Systemtray tray;
 
+    private Stage primaryStage;
+
+
     public static void main(String[] args) {
 
         Main main = new Main();
-        FXApplication front = new FXApplication();
         launch();
     }
     public void start(Stage primaryStage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("resources/scene.fxml"));
-        Scene scene = new Scene(root);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("Twitch Notification");
-        primaryStage.show();
+        this.primaryStage = primaryStage;
+        this.primaryStage.setTitle("AddressApp");
+
+        initMainLayout();
+    }
+
+    public void initMainLayout() {
+        try {
+
+            FXMLLoader loader = new FXMLLoader();
+            loader.setLocation(Main.class.getResource("scene.fxml"));
+            AnchorPane anchor = (AnchorPane) loader.load();
+
+            // Show the scene containing the root layout.
+            Scene scene = new Scene(anchor);
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+            SceneController controller = loader.getController();
+            controller.setMain(this);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Stage getPrimaryStage() {
+        return primaryStage;
     }
 
     public Main() {
