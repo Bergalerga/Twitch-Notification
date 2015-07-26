@@ -62,12 +62,13 @@ public class Stream {
         BufferedReader rd;
         String line;
         StringBuilder result = new StringBuilder();
+        System.out.println(url);
         try {
             urlobj = new URL(this.url);
             conn = (HttpURLConnection) urlobj.openConnection();
             conn.setRequestMethod("GET");
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            
+
             while ((line = rd.readLine()) != null) {
                 result.append(line);
             }
