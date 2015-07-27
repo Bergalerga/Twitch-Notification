@@ -80,8 +80,8 @@ public class Main extends javafx.application.Application{
     }
 
     public Main() {
-        addStreamer("zfg1");
-        mainLoop();
+        System.out.println(Stream.getFollowers("berguslergus"));
+        //mainLoop();
 
     }
 
@@ -114,7 +114,7 @@ public class Main extends javafx.application.Application{
 
     public void addStreamer(String channelName) {
         Stream handler = new Stream(channelName);
-        if (handler.getStreamValidity()) {
+        if (handler.getStreamValidity() && !streamlist.contains(handler)) {
             streamlist.add(handler);
         }
     }
