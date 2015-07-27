@@ -14,6 +14,7 @@ import sun.plugin.javascript.navig.Anchor;
 import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by berg on 18/07/15.
@@ -31,6 +32,7 @@ public class Main extends javafx.application.Application{
     public static void main(String[] args) {
 
         Main main = new Main();
+
         //launch();
 
     }
@@ -78,9 +80,7 @@ public class Main extends javafx.application.Application{
     }
 
     public Main() {
-        addStreamer("gamesdonequick");
         addStreamer("zfg1");
-        addStreamer("ahfaohoshfhfoa");
         mainLoop();
 
     }
@@ -98,6 +98,8 @@ public class Main extends javafx.application.Application{
                             }
                         }
                     }
+                    Collections.sort(streamlist);
+                    System.out.println(streamlist);
                     try {
                         t1.sleep(10000);
                     }

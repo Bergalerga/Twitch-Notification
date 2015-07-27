@@ -1,24 +1,18 @@
 package main;
 
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.UnknownHostException;
-
-import jdk.nashorn.internal.parser.JSONParser;
 import org.json.*;
-
-import javax.imageio.ImageIO;
 
 /**
  * Created by berg on 18/07/15.
  * Class responsible for handling the interaction with the twitch API.
  */
-public class Stream {
+public class Stream implements Comparable<Stream> {
 
     private String url = "";
     private JSONObject streamJSON = null;
@@ -159,4 +153,15 @@ public class Stream {
         return streamerName + " - " + onlineStatus;
     }
 
+    public int compareTo(Stream s1) {
+        if (s1.onlineStatus && !this.onlineStatus) {
+            return 1;
+        }
+        else if (!s1.onlineStatus && this.onlineStatus) {
+            return -1;
+        }
+        else {
+            return this.streamerName.toLowerCase().compareTo(s1.streamerName.toLowerCase());
+        }
+    }
 }
