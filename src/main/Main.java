@@ -33,7 +33,7 @@ public class Main extends javafx.application.Application{
 
         Main main = new Main();
 
-        //launch();
+        launch();
 
     }
     public void start(Stage primaryStage) {
