@@ -30,7 +30,7 @@ public class Main extends javafx.application.Application{
 
 
         Main main = new Main();
-        //launch();
+        launch();
 
     }
     public void start(Stage primaryStage) throws IOException {
@@ -66,8 +66,7 @@ public class Main extends javafx.application.Application{
     }
 
     public Main() {
-        Stream s1 = new Stream("zfg1");
-        streamlist.add(s1);
+
         mainLoop();
 
     }

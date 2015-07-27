@@ -144,7 +144,7 @@ public class Stream {
         return channelName;
     }
     public String toString() {
-        return streamerName + " - " + game + " - " + onlineStatus;
+        return streamerName + onlineStatus;
     }
     //FOR TESTING PURPOSES ONLY!
     public void setOnlineStatus(Boolean status) {
