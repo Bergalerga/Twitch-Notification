@@ -30,9 +30,8 @@ public class Main extends javafx.application.Application{
 
     public static void main(String[] args) {
 
-
         Main main = new Main();
-        launch();
+        //launch();
 
     }
     public void start(Stage primaryStage) {
@@ -78,9 +77,10 @@ public class Main extends javafx.application.Application{
         }
     }
 
-    private void Main() {
-        Stream s1 = new Stream("zfg1");
-        streamlist.add(s1);
+    public Main() {
+        addStreamer("gamesdonequick");
+        addStreamer("zfg1");
+        addStreamer("ahfaohoshfhfoa");
         mainLoop();
 
     }
@@ -93,9 +93,8 @@ public class Main extends javafx.application.Application{
                         if (stream.getInternetConnection()) {
                             Boolean copy = stream.onlineStatus;
                             stream.updateStreamStatus();
-                            if (stream.isOnline() && !copy) {
+                            if (stream.onlineStatus && !copy) {
                                 tray.displayPopup(stream.getChannelName(), stream.getStreamHeader());
-                                System.out.println("japp");
                             }
                         }
                     }

@@ -63,6 +63,7 @@ public class Stream {
         catch (UnknownHostException ex) {
             //No internet
             streamJSON = new JSONObject("{\"status\":\"No internet\"}");
+            System.out.println("No internet");
         }
         catch (IOException e) {
             //No such streamer
@@ -71,12 +72,19 @@ public class Stream {
         if (!streamJSON.get("status").toString().equals("No internet")) {
             if (streamJSON.get("status").toString().equals("404")) {
                 streamValidity = false;
+                System.out.println("No such stream");
             }
             else {
                 streamValidity = true;
                 game = streamJSON.get("game").toString();
                 streamerName = streamJSON.get("display_name").toString();
                 streamHeader = streamJSON.get("status").toString();
+                if (isOnline()) {
+                    onlineStatus = true;
+                }
+                else {
+                    onlineStatus = false;
+                }
             }
         }
         else {
@@ -88,14 +96,14 @@ public class Stream {
      * Checks the online status of the channel
      * @return the online status
      */
-    public Boolean isOnline() {
+    private Boolean isOnline() {
         URL urlobj;
         HttpURLConnection conn;
         BufferedReader rd;
         String line;
         StringBuilder result = new StringBuilder();
         try {
-            urlobj = new URL("https://api.twitch.tv/kraken/streams" + channelName);
+            urlobj = new URL("https://api.twitch.tv/kraken/streams/" + channelName);
             conn = (HttpURLConnection) urlobj.openConnection();
             conn.setRequestMethod("GET");
             rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
@@ -105,11 +113,15 @@ public class Stream {
             rd.close();
         }
         catch (Exception ex) {
+            ex.printStackTrace();
             onlineStatus = false;
             return onlineStatus;
         }
-        onlineStatus = true;
-        return onlineStatus;
+        JSONObject obj = new JSONObject(result.toString());
+        if (obj.get("stream").toString().equals("null")) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -144,10 +156,7 @@ public class Stream {
         return channelName;
     }
     public String toString() {
-        return streamerName + onlineStatus;
+        return streamerName + " - " + onlineStatus;
     }
-    //FOR TESTING PURPOSES ONLY!
-    public void setOnlineStatus(Boolean status) {
-        onlineStatus = status;
-    }
+
 }
