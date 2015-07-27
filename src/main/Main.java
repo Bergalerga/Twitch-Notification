@@ -7,6 +7,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import sun.plugin.javascript.navig.Anchor;
 
@@ -24,6 +25,7 @@ public class Main extends javafx.application.Application{
     Thread t1;
 
     private Stage primaryStage;
+    private BorderPane rootLayout;
 
 
     public static void main(String[] args) {
@@ -33,40 +35,52 @@ public class Main extends javafx.application.Application{
         launch();
 
     }
-    public void start(Stage primaryStage) throws IOException {
+    public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Twitch Notification");
 
-        initMainLayout();
 
-    }
-
-    public void initMainLayout() {
         try {
 
-            FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(Main.class.getResource("scene.fxml"));
-            AnchorPane anchor = (AnchorPane) loader.load();
-
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("RootLayout.fxml"));
             // Show the scene containing the root layout.
-            Scene scene = new Scene(anchor);
+            rootLayout = (BorderPane) loader.load();
+            Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
 
-            SceneController controller = loader.getController();
-            controller.setMain(this);
+            //SceneController controller = loader.getController();
+            //controller.setMain(this);
 
         } catch (IOException e) {
             e.printStackTrace();
         }
+        showStreamOverview();
     }
 
     public Stage getPrimaryStage() {
         return primaryStage;
     }
 
-    public Main() {
+    /**
+     * Shows the person overview scene.
+     */
+    public void showStreamOverview() {
+        try {
+            // Load the fxml file and set into the center of the main layout
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("streamOverview.fxml"));
+            AnchorPane overviewPage = (AnchorPane) loader.load();
+            rootLayout.setCenter(overviewPage);
 
+        } catch (IOException e) {
+            // Exception gets thrown if the fxml file could not be loaded
+            e.printStackTrace();
+        }
+    }
+
+    private void Main() {
+        Stream s1 = new Stream("zfg1");
+        streamlist.add(s1);
         mainLoop();
 
     }
