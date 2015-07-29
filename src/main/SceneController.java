@@ -3,8 +3,10 @@ package main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.GridPane;
 
 import java.util.Collections;
 
@@ -27,6 +29,10 @@ public class SceneController {
     private TableColumn streamList;
     @FXML
     private TableColumn gameList;
+    @FXML
+    private GridPane gridPane;
+    @FXML
+    private Label userLabel, gameLabel, titleLabel, statusLabel, viewersLabel;
 
     public SceneController() {
         System.out.println("SceneController created");
@@ -82,7 +88,6 @@ public class SceneController {
     public void textInput() {
 
     }
-
     /**
      * Sets the items from the stream list to the view.
      */
@@ -93,4 +98,32 @@ public class SceneController {
         streamView.setItems(tempList);
         System.out.println(main.getStreamList());
     }
+    @FXML
+    public void streamClicked() {
+        if (streamView.getSelectionModel().getSelectedItem() != null) {
+            Stream s = (Stream) streamView.getSelectionModel().getSelectedItem();
+
+            gridPane.getChildren().remove(userLabel);
+            userLabel = new Label(s.getStreamerName());
+            gridPane.add(userLabel, 1, 0);
+
+            gridPane.getChildren().remove(titleLabel);
+            titleLabel = new Label(s.getStreamHeader());
+            gridPane.add(titleLabel, 1, 1);
+
+            gridPane.getChildren().remove(gameLabel);
+            gameLabel = new Label(s.getGame());
+            gridPane.add(gameLabel, 1, 2);
+
+            gridPane.getChildren().remove(statusLabel);
+            statusLabel = new Label(s.onlineStatus.toString());
+            gridPane.add(statusLabel, 1, 3);
+
+            gridPane.getChildren().remove(viewersLabel);
+            viewersLabel = new Label(s.getViewers());
+            gridPane.add(viewersLabel, 1, 4);
+
+        }
+    }
+
 }

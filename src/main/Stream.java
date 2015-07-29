@@ -20,11 +20,12 @@ public class Stream implements Comparable<Stream> {
     private JSONObject streamJSON = null;
     protected Boolean onlineStatus = false;
     private Boolean internetConnection = true;
-    private Boolean streamValidity;
+    private Boolean streamValidity = false;
     private String channelName;
     private String streamerName;
     private String game;
     private String streamHeader;
+    private String viewers;
 
     /**
      * Generates a valid JSON Object from the channelName provided
@@ -114,12 +115,16 @@ public class Stream implements Comparable<Stream> {
         catch (Exception ex) {
             ex.printStackTrace();
             onlineStatus = false;
+            viewers = "0";
             return onlineStatus;
         }
         JSONObject obj = new JSONObject(result.toString());
         if (obj.get("stream").toString().equals("null")) {
             return false;
         }
+        JSONObject temp = new JSONObject(obj.get("stream").toString());
+        System.out.println(temp);
+        viewers = temp.get("viewers").toString();
         return true;
     }
 
@@ -173,6 +178,9 @@ public class Stream implements Comparable<Stream> {
         return channelName;
     }
 
+    public String getViewers() {
+        return viewers;
+    }
     /**
      * defines how this object is printed
      */

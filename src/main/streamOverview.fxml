@@ -13,7 +13,7 @@
       <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="293.0" styleClass="background">
           <children>
-            <TableView fx:id="streamView" editable="true" prefHeight="345.0" prefWidth="237.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <TableView fx:id="streamView" editable="true" onMouseClicked="#streamClicked" prefHeight="345.0" prefWidth="237.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
               <columns>
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="122.0" text="Streamer" fx:id="streamList" />
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="140.0" text="Game" fx:id="gameList" />
@@ -30,18 +30,18 @@
         </AnchorPane>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0" styleClass="background">
           <children>
-            <GridPane gridLinesVisible="false" prefHeight="133.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="69.0">
+            <GridPane fx:id="gridPane" gridLinesVisible="false" prefHeight="133.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="69.0">
               <children>
                 <Label styleClass="label-bright" text="Username" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                 <Label styleClass="label-bright" text="title" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                 <Label styleClass="label-bright" text="Game" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                 <Label styleClass="label-bright" text="Status" GridPane.columnIndex="0" GridPane.rowIndex="3" />
-                <Label styleClass="label-bright" text="Uptime" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                <Label styleClass="label-bright" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="0" />
-                <Label styleClass="label-bright" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-                <Label styleClass="label-bright" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-                <Label styleClass="label-bright" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                <Label styleClass="label-bright" text="Label" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label styleClass="label-bright" text="Viewers" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                <Label styleClass="label-bright" text="" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label styleClass="label-bright" text="" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label styleClass="label-bright" text="" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label styleClass="label-bright" text="" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label styleClass="label-bright" text="" visible="true" GridPane.columnIndex="1" GridPane.rowIndex="4" />
               </children>
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.0" minWidth="10.0" prefWidth="78.0" />
