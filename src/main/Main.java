@@ -1,17 +1,12 @@
 package main;
 
-import frontend.FXApplication;
 import frontend.Systemtray;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import sun.plugin.javascript.navig.Anchor;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -32,7 +27,6 @@ public class Main extends javafx.application.Application{
     public static void main(String[] args) {
 
         Main main = new Main();
-
         launch();
 
     }
@@ -71,6 +65,8 @@ public class Main extends javafx.application.Application{
             // Load the fxml file and set into the center of the main layout
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("streamOverview.fxml"));
             AnchorPane overviewPage = (AnchorPane) loader.load();
+            SceneController controller = loader.getController();
+            controller.setMain(this);
             rootLayout.setCenter(overviewPage);
 
         } catch (IOException e) {

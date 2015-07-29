@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import javax.swing.table.TableColumn;
+
 /**
  * Created by berg on 18/07/15.
  */
@@ -14,11 +16,13 @@ public class SceneController {
 
     private Main main;
     @FXML
-    private Button Button;
+    private Button add;
     @FXML
     private TextField textField;
     @FXML
-    private ListView listView;
+    private TableColumn streamList;
+    @FXML
+    private TableColumn gameList;
 
     public SceneController() {
         System.out.println("SceneController created");
@@ -26,18 +30,21 @@ public class SceneController {
     }
     @FXML
     private void initialize() {
-        System.out.println("controller accessed");
+        System.out.println("Controller initialized");
     }
 
     public void setMain(Main main) {
         this.main = main;
     }
     @FXML
-    public void buttonClicked() {
-        String getText = textField.getText();
-        main.addStreamer(getText);
-        textField.setText("");
-        list();
+    public void addClicked() {
+        if (textField.getText().length() != 0) {
+            System.out.println("Clicked");
+            String getText = textField.getText();
+            main.addStreamer(getText);
+            textField.setText("");
+            list();
+        }
     }
 
     @FXML
@@ -48,6 +55,7 @@ public class SceneController {
     @FXML
     public void list() {
         ObservableList<Stream> tempList = FXCollections.observableList(main.streamlist);
-        listView.setItems(tempList);
+        for (Stream stream : tempList) {
+        }
     }
 }
