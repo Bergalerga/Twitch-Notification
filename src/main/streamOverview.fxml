@@ -13,7 +13,7 @@
       <items>
         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="398.0" prefWidth="293.0" styleClass="background">
           <children>
-            <TableView editable="true" prefHeight="345.0" prefWidth="237.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+            <TableView fx:id="streamView" editable="true" prefHeight="345.0" prefWidth="237.0" tableMenuButtonVisible="false" AnchorPane.bottomAnchor="43.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
               <columns>
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="122.0" text="Streamer" fx:id="streamList" />
                 <TableColumn maxWidth="5000.0" minWidth="10.0" prefWidth="140.0" text="Game" fx:id="gameList" />
@@ -23,7 +23,7 @@
               <children>
                 <TextField id="text" fx:id="textField" prefHeight="29.0" prefWidth="98.0" promptText="Enter channelname" />
                 <Button fx:id="add" mnemonicParsing="false" onAction="#addClicked" text="Add..." />
-                <Button mnemonicParsing="false" text="Delete" />
+                <Button fx:id="delete" mnemonicParsing="false" onAction="#deleteClicked" text="Delete" />
               </children>
             </HBox>
           </children>

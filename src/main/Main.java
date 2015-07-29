@@ -16,7 +16,7 @@ import java.util.Collections;
  */
 public class Main extends javafx.application.Application{
 
-    ArrayList<Stream> streamlist = new ArrayList();
+    private ArrayList<Stream> streamlist = new ArrayList();
     Systemtray tray;
     Thread t1;
 
@@ -76,7 +76,7 @@ public class Main extends javafx.application.Application{
     }
 
     public Main() {
-        System.out.println(Stream.getFollowers("berguslergus"));
+        //addStreamer("chiefmango");
         //mainLoop();
 
     }
@@ -114,6 +114,11 @@ public class Main extends javafx.application.Application{
             streamlist.add(handler);
         }
     }
-
+    public ArrayList<Stream> getStreamList() {
+        return streamlist;
+    }
+    public void setStreamList(ArrayList<Stream> streamlist) {
+        this.streamlist = streamlist;
+    }
 
 }
