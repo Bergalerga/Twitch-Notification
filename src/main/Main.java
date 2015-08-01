@@ -9,7 +9,9 @@ import javafx.stage.Stage;
 
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by berg on 18/07/15.
@@ -26,7 +28,7 @@ public class Main extends javafx.application.Application{
 
     public static void main(String[] args) {
 
-        Main main = new Main();
+        //Main main = new Main();
         launch();
 
     }
@@ -55,7 +57,8 @@ public class Main extends javafx.application.Application{
 
     public void stop() {
         System.out.println("Exit");
-        //save();
+        //saveFile();
+        System.exit(0);
     }
 
     public Stage getPrimaryStage() {
@@ -81,16 +84,15 @@ public class Main extends javafx.application.Application{
     }
 
     public Main() {
-        //addStreamer("chiefmango");
+        //loadFile();
         //mainLoop();
-
     }
 
     private void mainLoop() {
         t1 = new Thread(new Runnable() {
             public void run() {
                 while(true) {
-                    for (Stream stream : streamlist) {
+                    for (Stream stream : getStreamList()) {
                         if (stream.getInternetConnection()) {
                             Boolean copy = stream.onlineStatus;
                             stream.updateStreamStatus();
@@ -99,8 +101,7 @@ public class Main extends javafx.application.Application{
                             }
                         }
                     }
-                    Collections.sort(streamlist);
-                    System.out.println(streamlist);
+                    Collections.sort(getStreamList());
                     try {
                         t1.sleep(10000);
                     }
@@ -114,27 +115,62 @@ public class Main extends javafx.application.Application{
     }
 
     public void addStreamer(String channelName) {
-        Stream handler = new Stream(channelName);
-        if (handler.getStreamValidity() && !streamlist.contains(handler)) {
+        Stream handler = new Stream(channelName.toLowerCase());
+        if (handler.getStreamValidity()) {
+            for (Stream s : getStreamList()) {
+                if (s.getChannelName().equals(handler.getChannelName())) {
+                    return;
+                }
+            }
             streamlist.add(handler);
         }
     }
-    public ArrayList<Stream> getStreamList() {
+    public synchronized ArrayList<Stream> getStreamList() {
+        notifyAll();
         return streamlist;
-    }
-    public void setStreamList(ArrayList<Stream> streamlist) {
-        this.streamlist = streamlist;
-    }
 
-    public void save() {
+    }
+    public void saveFile() {
         PrintWriter writer = null;
         try {
             writer = new PrintWriter("save.txt");
         } catch (FileNotFoundException e) {
 
         }
-        writer.println(streamlist.toString());
+        for (Stream s : streamlist) {
+            writer.println(s.toString());
+        }
         writer.close();
     }
 
+    public void loadFile() {
+        try {
+            BufferedReader br = new BufferedReader(new FileReader("save.txt"));
+            StringBuilder sb = new StringBuilder();
+            String line = br.readLine();
+
+            while (line != null) {
+                sb.append(line);
+                sb.append(",");
+                line = br.readLine();
+            }
+            String everything = sb.toString();
+            System.out.println(everything);
+            List<String> items = Arrays.asList(everything.split("\\s*,\\s*"));
+            for (String str : items) {
+                if (!str.equals("")) {
+                    addStreamer(str);
+                }
+            }
+            br.close();
+
+        }
+        catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
