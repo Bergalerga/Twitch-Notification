@@ -7,7 +7,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collections;
 
@@ -51,6 +51,11 @@ public class Main extends javafx.application.Application{
             e.printStackTrace();
         }
         showStreamOverview();
+    }
+
+    public void stop() {
+        System.out.println("Exit");
+        //save();
     }
 
     public Stage getPrimaryStage() {
@@ -119,6 +124,17 @@ public class Main extends javafx.application.Application{
     }
     public void setStreamList(ArrayList<Stream> streamlist) {
         this.streamlist = streamlist;
+    }
+
+    public void save() {
+        PrintWriter writer = null;
+        try {
+            writer = new PrintWriter("save.txt");
+        } catch (FileNotFoundException e) {
+
+        }
+        writer.println(streamlist.toString());
+        writer.close();
     }
 
 }

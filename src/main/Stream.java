@@ -185,7 +185,7 @@ public class Stream implements Comparable<Stream> {
      * defines how this object is printed
      */
     public String toString() {
-        return streamerName + " - " + onlineStatus;
+        return channelName;
     }
 
     /**
