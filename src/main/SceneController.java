@@ -96,7 +96,6 @@ public class SceneController {
         Collections.sort(main.getStreamList());
         ObservableList<Stream> tempList = FXCollections.observableList(main.getStreamList());
         streamView.setItems(tempList);
-        System.out.println(main.getStreamList());
     }
     @FXML
     public void streamClicked() {

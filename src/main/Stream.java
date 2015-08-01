@@ -123,7 +123,6 @@ public class Stream implements Comparable<Stream> {
             return false;
         }
         JSONObject temp = new JSONObject(obj.get("stream").toString());
-        System.out.println(temp);
         viewers = temp.get("viewers").toString();
         return true;
     }
