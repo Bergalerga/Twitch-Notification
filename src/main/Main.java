@@ -44,7 +44,7 @@ public class Main extends javafx.application.Application{
 
         try {
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("RootLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/main/RootLayout.fxml"));
             // Show the scene containing the root layout.
             rootLayout = (BorderPane) loader.load();
             Scene scene = new Scene(rootLayout);
@@ -79,7 +79,7 @@ public class Main extends javafx.application.Application{
     public void showStreamOverview() {
         try {
             // Load the fxml file and set into the center of the main layout
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("streamOverview.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/main/streamOverview.fxml"));
             AnchorPane overviewPage = (AnchorPane) loader.load();
             SceneController controller = loader.getController();
             controller.setMain(this);
