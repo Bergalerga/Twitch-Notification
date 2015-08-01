@@ -32,6 +32,11 @@ public class Main extends javafx.application.Application{
         launch();
 
     }
+
+    /**
+     * Called by Java FX when the launch function is called. Reads from the FXML files and launches the application.
+     * @param primaryStage
+     */
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Twitch Notification");
@@ -55,6 +60,9 @@ public class Main extends javafx.application.Application{
         showStreamOverview();
     }
 
+    /**
+     * Called by Java FX when the application is shut down. Triggers the save function.
+     */
     public void stop() {
         System.out.println("Exit");
         //saveFile();
@@ -88,6 +96,9 @@ public class Main extends javafx.application.Application{
         //mainLoop();
     }
 
+    /**
+     * The loop responsible for updating stream statuses in an interval
+     */
     private void mainLoop() {
         t1 = new Thread(new Runnable() {
             public void run() {
@@ -130,6 +141,10 @@ public class Main extends javafx.application.Application{
         return streamlist;
 
     }
+
+    /**
+     * Saves the streamers in the streamlist to the save.txt file.
+     */
     public void saveFile() {
         PrintWriter writer = null;
         try {
@@ -143,6 +158,9 @@ public class Main extends javafx.application.Application{
         writer.close();
     }
 
+    /**
+     * Loads the save.txt file if it exits. Adds the streamers to the stream list.
+     */
     public void loadFile() {
         try {
             BufferedReader br = new BufferedReader(new FileReader("save.txt"));
