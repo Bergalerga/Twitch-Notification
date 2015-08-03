@@ -7,10 +7,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
-  <stylesheets>
-    <URL value="@../css/rootstyle.css" />
-  </stylesheets>
+<BorderPane prefHeight="550.0" prefWidth="800.0" styleClass="background" stylesheets="@../css/rootstyle.css" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1">
   <top>
     <MenuBar prefHeight="25.0" prefWidth="600.0">
       <menus>
