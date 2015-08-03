@@ -1,6 +1,4 @@
-package main;
-
-import frontend.Systemtray;
+import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
@@ -16,7 +14,7 @@ import java.util.List;
 /**
  * Created by berg on 18/07/15.
  */
-public class Main extends javafx.application.Application{
+public class Main extends Application {
 
     private ArrayList<Stream> streamlist = new ArrayList();
     Systemtray tray;
@@ -28,7 +26,7 @@ public class Main extends javafx.application.Application{
 
     public static void main(String[] args) {
 
-        //Main main = new Main();
+        Main main = new Main();
         launch();
 
     }
@@ -40,13 +38,11 @@ public class Main extends javafx.application.Application{
     public void start(Stage primaryStage) {
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Twitch Notification");
-
-
         try {
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/main/RootLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/rootLayout.fxml"));
             // Show the scene containing the root layout.
-            rootLayout = (BorderPane) loader.load();
+            rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);
             primaryStage.setScene(scene);
             primaryStage.show();
@@ -54,7 +50,7 @@ public class Main extends javafx.application.Application{
             //SceneController controller = loader.getController();
             //controller.setMain(this);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         showStreamOverview();
@@ -79,8 +75,8 @@ public class Main extends javafx.application.Application{
     public void showStreamOverview() {
         try {
             // Load the fxml file and set into the center of the main layout
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/main/streamOverview.fxml"));
-            AnchorPane overviewPage = (AnchorPane) loader.load();
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/streamOverview.fxml"));
+            AnchorPane overviewPage = loader.load();
             SceneController controller = loader.getController();
             controller.setMain(this);
             rootLayout.setCenter(overviewPage);

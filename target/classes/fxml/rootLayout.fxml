@@ -9,7 +9,7 @@
 
 <BorderPane prefHeight="400.0" prefWidth="600.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2">
   <stylesheets>
-    <URL value="@rootstyle.css" />
+    <URL value="@../css/rootstyle.css" />
   </stylesheets>
   <top>
     <MenuBar prefHeight="25.0" prefWidth="600.0">
