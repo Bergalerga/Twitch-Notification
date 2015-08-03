@@ -41,7 +41,7 @@ public class SceneController {
      * Initializes the view.
      */
     @FXML
-    private void initialize() {
+    public void initialize() {
 
         streamList.setCellValueFactory(new PropertyValueFactory<Stream, String>("streamerName"));
         gameList.setCellValueFactory(new PropertyValueFactory<Stream, String>("game"));
@@ -74,7 +74,7 @@ public class SceneController {
      */
     @FXML
     public void deleteClicked() {
-        if (main.getStreamList().size() != 0) {
+        if (main.getStreamList().size() != 0 && streamView.getSelectionModel().getSelectedItem() != null) {
             Stream selected = (Stream) streamView.getSelectionModel().getSelectedItem();
             main.getStreamList().remove(main.getStreamList().indexOf(selected));
             list();

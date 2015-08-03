@@ -27,6 +27,7 @@ public class Main extends Application {
     public static void main(String[] args) {
 
         Main main = new Main();
+
         launch();
 
     }
@@ -40,7 +41,7 @@ public class Main extends Application {
         this.primaryStage.setTitle("Twitch Notification");
         try {
 
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/rootLayout.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("fxml/rootLayout.fxml"));
             // Show the scene containing the root layout.
             rootLayout = loader.load();
             Scene scene = new Scene(rootLayout);
@@ -75,7 +76,7 @@ public class Main extends Application {
     public void showStreamOverview() {
         try {
             // Load the fxml file and set into the center of the main layout
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("/fxml/streamOverview.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("fxml/streamOverview.fxml"));
             AnchorPane overviewPage = loader.load();
             SceneController controller = loader.getController();
             controller.setMain(this);
