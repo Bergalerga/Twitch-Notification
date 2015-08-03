@@ -81,7 +81,7 @@ public class Main extends Application {
             controller.setMain(this);
             rootLayout.setCenter(overviewPage);
 
-        } catch (IOException e) {
+        } catch (Exception e) {
             // Exception gets thrown if the fxml file could not be loaded
             e.printStackTrace();
         }
