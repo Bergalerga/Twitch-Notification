@@ -1,3 +1,6 @@
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -6,7 +9,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
-import org.json.*;
+
 
 /**
  * Created by berg on 18/07/15.
@@ -28,7 +31,7 @@ public class Stream implements Comparable<Stream> {
     /**
      * Generates a valid JSON Object from the channelName provided
      *
-     * @param url name of the twitch channel
+     * @param channelName name of the twitch channel
      */
 
     public Stream(String channelName) {
