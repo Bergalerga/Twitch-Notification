@@ -101,7 +101,7 @@ public class Systemtray {
                 try {
                     java.awt.Desktop.getDesktop().browse(uri);
                 } catch (Exception ex) {
-
+                    ex.printStackTrace();
                 }
             }
         });

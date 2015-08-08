@@ -62,7 +62,7 @@ public class Main extends Application {
      */
     public void stop() {
         System.out.println("Exit");
-        //saveFile();
+        saveFile();
         System.exit(0);
     }
 
@@ -89,7 +89,7 @@ public class Main extends Application {
     }
 
     public Main() {
-        //loadFile();
+        loadFile();
         //mainLoop();
     }
 
@@ -143,11 +143,16 @@ public class Main extends Application {
      * Saves the streamers in the streamlist to the save.txt file.
      */
     public void saveFile() {
+        File dir = new File("save");
         PrintWriter writer = null;
         try {
-            writer = new PrintWriter("save.txt");
+            if (!dir.exists()) {
+                System.out.println("hei");
+                dir.mkdir();
+            }
+            writer = new PrintWriter("save/save.txt");
         } catch (FileNotFoundException e) {
-
+            e.printStackTrace();
         }
         for (Stream s : streamlist) {
             writer.println(s.toString());
@@ -160,7 +165,7 @@ public class Main extends Application {
      */
     public void loadFile() {
         try {
-            BufferedReader br = new BufferedReader(new FileReader("save.txt"));
+            BufferedReader br = new BufferedReader(new FileReader("save/save.txt"));
             StringBuilder sb = new StringBuilder();
             String line = br.readLine();
 

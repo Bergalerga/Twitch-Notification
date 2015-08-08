@@ -1,3 +1,4 @@
+import javafx.scene.image.Image;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -27,6 +28,8 @@ public class Stream implements Comparable<Stream> {
     private String game;
     private String streamHeader;
     private String viewers;
+    private Image streamLogo = null;
+    private Image streamBanner = null;
 
     /**
      * Generates a valid JSON Object from the channelName provided
@@ -80,6 +83,12 @@ public class Stream implements Comparable<Stream> {
                 game = streamJSON.get("game").toString();
                 streamerName = streamJSON.get("display_name").toString();
                 streamHeader = streamJSON.get("status").toString();
+                if (streamJSON.get("logo").toString() != "null") {
+                    streamLogo = new Image(streamJSON.get("logo").toString());
+                }
+                if (streamJSON.get("profile_banner").toString() != "null") {
+                    streamBanner = new Image(streamJSON.get("profile_banner").toString());
+                }
                 if (isOnline()) {
                     onlineStatus = true;
                 }
@@ -238,5 +247,14 @@ public class Stream implements Comparable<Stream> {
             follows.add(temp.get("name").toString());
         }
         return follows;
+    }
+    public String getStreamURL() {
+        return "https://twitch.tv/" + channelName;
+    }
+    public Image getStreamLogo() {
+        return streamLogo;
+    }
+    public Image getStreamBanner() {
+        return streamBanner;
     }
 }
