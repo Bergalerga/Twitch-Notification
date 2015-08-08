@@ -83,12 +83,7 @@ public class Stream implements Comparable<Stream> {
                 game = streamJSON.get("game").toString();
                 streamerName = streamJSON.get("display_name").toString();
                 streamHeader = streamJSON.get("status").toString();
-                if (streamJSON.get("logo").toString() != "null") {
-                    streamLogo = new Image(streamJSON.get("logo").toString());
-                }
-                if (streamJSON.get("profile_banner").toString() != "null") {
-                    streamBanner = new Image(streamJSON.get("profile_banner").toString());
-                }
+
                 if (isOnline()) {
                     onlineStatus = true;
                 }
@@ -188,6 +183,8 @@ public class Stream implements Comparable<Stream> {
     }
 
     public String getViewers() {
+
+        isOnline();
         return viewers;
     }
     /**
@@ -256,5 +253,14 @@ public class Stream implements Comparable<Stream> {
     }
     public Image getStreamBanner() {
         return streamBanner;
+    }
+
+    public void createImages() {
+        if (streamJSON.get("logo").toString() != "null") {
+            streamLogo = new Image(streamJSON.get("logo").toString());
+        }
+        if (streamJSON.get("profile_banner").toString() != "null") {
+            streamBanner = new Image(streamJSON.get("profile_banner").toString());
+        }
     }
 }

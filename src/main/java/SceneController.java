@@ -1,7 +1,6 @@
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -9,13 +8,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.util.Callback;
 
 import java.awt.*;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Collections;
-import java.net.URI;
+
 
 
 /**
@@ -59,8 +60,38 @@ public class SceneController {
     public void initialize() {
 
         streamList.setCellValueFactory(new PropertyValueFactory<Stream, String>("streamerName"));
-        gameList.setCellValueFactory(new PropertyValueFactory<Stream, String>("game"));
-        System.out.println("Controller initialized");
+        gameList.setCellValueFactory(new PropertyValueFactory<Stream, Boolean>("game"));
+
+        streamList.setCellFactory(new Callback<TableColumn<Stream, String>, TableCell<Stream, String>>() {
+            @Override
+            public TableCell<Stream, String> call(TableColumn<Stream, String> param) {
+                return new TableCell<Stream, String>() {
+                    @Override
+                    protected void updateItem(String item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (!empty) {
+                            setText(item);
+
+                            for (Stream s : main.getStreamList()) {
+                                if (s.getStreamerName().equals(item)) {
+                                    if (s.onlineStatus) {
+                                        setTextFill(Color.GREEN);
+                                    }
+                                    else{
+                                        setTextFill(Color.WHITE);
+                                    }
+                                }
+                            }
+                        }
+                        else {
+                            setText(null);
+                            setTextFill(Color.WHITE);
+                        }
+                    }
+                };
+            }
+        });
+        System.out.println("Controller Initialized");
     }
 
     /**
@@ -69,6 +100,7 @@ public class SceneController {
      */
     public void setMain(Main main) {
         this.main = main;
+        list();
     }
 
     /**
@@ -114,7 +146,6 @@ public class SceneController {
     public void streamClicked() {
         if (streamView.getSelectionModel().getSelectedItem() != null) {
             Stream s = (Stream) streamView.getSelectionModel().getSelectedItem();
-
             gridPane.getChildren().remove(userLabel);
             userLabel = new Label(s.getStreamerName());
             gridPane.add(userLabel, 1, 0);
@@ -150,6 +181,7 @@ public class SceneController {
 
             }
             gridPane.add(statusLabel, 1, 1);
+            s.createImages();
             if (s.getStreamLogo() != null) {
                 logo.setImage(s.getStreamLogo());
             }

@@ -26,10 +26,7 @@ public class Main extends Application {
 
     public static void main(String[] args) {
 
-        Main main = new Main();
-
         launch();
-
     }
 
     /**
@@ -79,6 +76,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("fxml/streamOverview.fxml"));
             AnchorPane overviewPage = loader.load();
             SceneController controller = loader.getController();
+            Main main = new Main();
             controller.setMain(this);
             rootLayout.setCenter(overviewPage);
 
@@ -90,7 +88,7 @@ public class Main extends Application {
 
     public Main() {
         loadFile();
-        //mainLoop();
+        mainLoop();
     }
 
     /**
@@ -147,7 +145,6 @@ public class Main extends Application {
         PrintWriter writer = null;
         try {
             if (!dir.exists()) {
-                System.out.println("hei");
                 dir.mkdir();
             }
             writer = new PrintWriter("save/save.txt");
@@ -175,7 +172,6 @@ public class Main extends Application {
                 line = br.readLine();
             }
             String everything = sb.toString();
-            System.out.println(everything);
             List<String> items = Arrays.asList(everything.split("\\s*,\\s*"));
             for (String str : items) {
                 if (!str.equals("")) {
