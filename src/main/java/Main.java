@@ -6,17 +6,15 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * Created by berg on 18/07/15.
  */
 public class Main extends Application {
 
-    private ArrayList<Stream> streamlist = new ArrayList();
+    static CopyOnWriteArrayList<Stream> streamList = new CopyOnWriteArrayList<>();
     Systemtray tray;
     Thread t1;
 
@@ -34,6 +32,9 @@ public class Main extends Application {
      * @param primaryStage
      */
     public void start(Stage primaryStage) {
+
+        tray = new Systemtray();
+        loadFile();
         this.primaryStage = primaryStage;
         this.primaryStage.setTitle("Twitch Notification");
         try {
@@ -52,6 +53,9 @@ public class Main extends Application {
             e.printStackTrace();
         }
         showStreamOverview();
+
+        mainLoop();
+
     }
 
     /**
@@ -76,7 +80,6 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("fxml/streamOverview.fxml"));
             AnchorPane overviewPage = loader.load();
             SceneController controller = loader.getController();
-            Main main = new Main();
             controller.setMain(this);
             rootLayout.setCenter(overviewPage);
 
@@ -86,11 +89,6 @@ public class Main extends Application {
         }
     }
 
-    public Main() {
-        loadFile();
-        mainLoop();
-    }
-
     /**
      * The loop responsible for updating stream statuses in an interval
      */
@@ -98,16 +96,17 @@ public class Main extends Application {
         t1 = new Thread(new Runnable() {
             public void run() {
                 while(true) {
-                    for (Stream stream : getStreamList()) {
+                    for (Stream stream : streamList) {
                         if (stream.getInternetConnection()) {
                             Boolean copy = stream.onlineStatus;
                             stream.updateStreamStatus();
                             if (stream.onlineStatus && !copy) {
-                                tray.displayPopup(stream.getChannelName(), stream.getStreamHeader());
+                                System.out.println("popup");
+                                tray.displayPopup(stream.getStreamerName(), stream.getStreamHeader());
                             }
                         }
                     }
-                    Collections.sort(getStreamList());
+                    Collections.sort(streamList);
                     try {
                         t1.sleep(10000);
                     }
@@ -121,24 +120,19 @@ public class Main extends Application {
     }
 
     public void addStreamer(String channelName) {
-        Stream handler = new Stream(channelName.toLowerCase());
-        if (handler.getStreamValidity()) {
-            for (Stream s : getStreamList()) {
-                if (s.getChannelName().equals(handler.getChannelName())) {
+        Stream stream = new Stream(channelName.toLowerCase());
+        if (stream.getStreamValidity()) {
+            for (Stream s : streamList) {
+                if (s.getChannelName().equals(stream.getChannelName())) {
                     return;
                 }
             }
-            streamlist.add(handler);
+            streamList.add(stream);
         }
-    }
-    public synchronized ArrayList<Stream> getStreamList() {
-        notifyAll();
-        return streamlist;
-
     }
 
     /**
-     * Saves the streamers in the streamlist to the save.txt file.
+     * Saves the streamers in the streamList to the save.txt file.
      */
     public void saveFile() {
         File dir = new File("save");
@@ -151,7 +145,7 @@ public class Main extends Application {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        for (Stream s : streamlist) {
+        for (Stream s : streamList) {
             writer.println(s.toString());
         }
         writer.close();

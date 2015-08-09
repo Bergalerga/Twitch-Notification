@@ -72,7 +72,7 @@ public class SceneController {
                         if (!empty) {
                             setText(item);
 
-                            for (Stream s : main.getStreamList()) {
+                            for (Stream s : Main.streamList) {
                                 if (s.getStreamerName().equals(item)) {
                                     if (s.onlineStatus) {
                                         setTextFill(Color.GREEN);
@@ -121,9 +121,9 @@ public class SceneController {
      */
     @FXML
     public void deleteClicked() {
-        if (main.getStreamList().size() != 0 && streamView.getSelectionModel().getSelectedItem() != null) {
+        if (Main.streamList.size() != 0 && streamView.getSelectionModel().getSelectedItem() != null) {
             Stream selected = (Stream) streamView.getSelectionModel().getSelectedItem();
-            main.getStreamList().remove(main.getStreamList().indexOf(selected));
+            Main.streamList.remove(Main.streamList.indexOf(selected));
             list();
             streamView.getSelectionModel().selectNext();
         }
@@ -138,12 +138,13 @@ public class SceneController {
      */
     @FXML
     public void list() {
-        Collections.sort(main.getStreamList());
-        ObservableList<Stream> tempList = FXCollections.observableList(main.getStreamList());
+        Collections.sort(Main.streamList);
+        ObservableList<Stream> tempList = FXCollections.observableList(Main.streamList);
         streamView.setItems(tempList);
     }
     @FXML
     public void streamClicked() {
+        System.out.println("Clicked");
         if (streamView.getSelectionModel().getSelectedItem() != null) {
             Stream s = (Stream) streamView.getSelectionModel().getSelectedItem();
             gridPane.getChildren().remove(userLabel);

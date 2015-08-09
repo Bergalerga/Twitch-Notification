@@ -24,6 +24,7 @@ public class Systemtray {
 
     public Systemtray() {
         popup = new PopupMenu();
+        System.out.println("Noe");
         tray = SystemTray.getSystemTray();
         initSystemTray();
     }
@@ -35,7 +36,7 @@ public class Systemtray {
         }
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("static/img/trayIcon.png"));
+            img = ImageIO.read(new File("src/main/resources/img/trayIcon.png"));
         }
         catch (IOException e) {
             System.out.println("Could not read file");
