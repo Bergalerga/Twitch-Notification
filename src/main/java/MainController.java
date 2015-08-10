@@ -22,7 +22,7 @@ import java.util.Collections;
 /**
  * Created by berg on 18/07/15.
  */
-public class SceneController {
+public class MainController {
 
     private Main main;
     @FXML
@@ -36,6 +36,10 @@ public class SceneController {
     @FXML
     private TableView streamView;
     @FXML
+    private TextField followersTextField;
+    @FXML
+    private Button addFollowing;
+    @FXML
     private TableColumn streamList;
     @FXML
     private TableColumn gameList;
@@ -48,7 +52,7 @@ public class SceneController {
     @FXML
     private ImageView banner;
 
-    public SceneController() {
+    public MainController() {
         System.out.println("SceneController created");
 
     }
@@ -76,14 +80,12 @@ public class SceneController {
                                 if (s.getStreamerName().equals(item)) {
                                     if (s.onlineStatus) {
                                         setTextFill(Color.GREEN);
-                                    }
-                                    else{
+                                    } else {
                                         setTextFill(Color.WHITE);
                                     }
                                 }
                             }
-                        }
-                        else {
+                        } else {
                             setText(null);
                             setTextFill(Color.WHITE);
                         }
@@ -92,6 +94,7 @@ public class SceneController {
             }
         });
         System.out.println("Controller Initialized");
+        addFollowing.setVisible(true);
     }
 
     /**
@@ -115,7 +118,14 @@ public class SceneController {
             list();
         }
     }
-
+    public void addFollowersClicked() {
+        if (followersTextField.getText().length() != 0) {
+            String getText = followersTextField.getText();
+            main.addFollowers(getText);
+            followersTextField.setText("");
+            list();
+        }
+    }
     /**
      * Removes the selected channel name in the list from the stream list.
      */

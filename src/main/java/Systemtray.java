@@ -24,7 +24,6 @@ public class Systemtray {
 
     public Systemtray() {
         popup = new PopupMenu();
-        System.out.println("Noe");
         tray = SystemTray.getSystemTray();
         initSystemTray();
     }
@@ -62,18 +61,12 @@ public class Systemtray {
     private void initActionListeners() {
         exit.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                int reply = JOptionPane.showConfirmDialog(null, "Are you sure?", "", JOptionPane.YES_NO_OPTION);
-                if (reply == JOptionPane.YES_OPTION) {
-                    System.exit(0);
-                }
-                else {
-                    return;
-                }
+                System.exit(0);
             }
         });
         about.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "Developed and administered by Fredrik Christoffer Berg \n fredrik.c.berg1@gmail.com");
+                JOptionPane.showMessageDialog(null, "Developed by Fredrik Christoffer Berg \n fredrik.c.berg1@gmail.com");
             }
         });
     }

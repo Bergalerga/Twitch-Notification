@@ -21,7 +21,6 @@ public class Main extends Application {
     private Stage primaryStage;
     private BorderPane rootLayout;
 
-
     public static void main(String[] args) {
 
         launch();
@@ -79,7 +78,7 @@ public class Main extends Application {
             // Load the fxml file and set into the center of the main layout
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("fxml/streamOverview.fxml"));
             AnchorPane overviewPage = loader.load();
-            SceneController controller = loader.getController();
+            MainController controller = loader.getController();
             controller.setMain(this);
             rootLayout.setCenter(overviewPage);
 
@@ -128,6 +127,12 @@ public class Main extends Application {
                 }
             }
             streamList.add(stream);
+        }
+    }
+    public void addFollowers(String channelName) {
+        ArrayList<String> followers = Stream.getFollowers(channelName);
+        for (String s : followers) {
+            addStreamer(s);
         }
     }
 
